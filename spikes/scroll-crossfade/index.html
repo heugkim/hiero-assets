@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>U2 spike - scroll + forced perspective + light cross-fade</title>
+<style>
+  :root { color-scheme: dark; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #05060a; color: #e8e8ea;
+    font: 400 15px/1.4 "Helvetica Neue", Arial, sans-serif; }
+
+  /* The world canvas: a fixed full-screen layer BENEATH the page content
+     (this mirrors the production plan - a new full-screen canvas under Framer). */
+  #world { position: fixed; inset: 0; width: 100vw; height: 100svh;
+    display: block; z-index: 0; }
+
+  /* The scroll container only exists to create scroll distance. 700vh = ~7 screens. */
+  #scroll { position: relative; z-index: 1; height: 700vh; pointer-events: none; }
+
+  /* Copy overlays - faked "pins" (opacity windows), not real scroll-pinning (U5's job). */
+  #overlay { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
+  .copy { position: absolute; left: 0; right: 0; top: 38%; text-align: center;
+    opacity: 0; transform: translateY(8px); transition: none;
+    font-weight: 300; font-size: clamp(22px, 4.5vw, 54px); letter-spacing: -0.01em;
+    text-shadow: 0 2px 30px rgba(0,0,0,0.6); padding: 0 8vw; }
+
+  /* HUD - the verification readout (FPS, progress, blend, state). */
+  #hud { position: fixed; top: 12px; left: 12px; z-index: 3;
+    font: 500 12px/1.5 ui-monospace, "SF Mono", Menlo, monospace;
+    background: rgba(8,10,16,0.72); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px; padding: 10px 12px; min-width: 188px;
+    backdrop-filter: blur(8px); white-space: pre; }
+  #hud b { color: #8fd0ff; font-weight: 600; }
+  #hud .warn { color: #ff8a5c; }
+  #hud .ok { color: #7ee08a; }
+
+  #hint { position: fixed; bottom: 18px; left: 0; right: 0; z-index: 3;
+    text-align: center; font-size: 12px; opacity: 0.5; pointer-events: none; }
+
+  /* Tier 3 floor: static wordmark if WebGL2 is unavailable. */
+  #fallback { position: fixed; inset: 0; z-index: 5; display: none;
+    align-items: center; justify-content: center; background: #05060a;
+    font-size: clamp(40px, 12vw, 140px); font-weight: 700; letter-spacing: 0.1em; }
+</style>
+</head>
+<body>
+  <canvas id="world"></canvas>
+
+  <div id="overlay">
+    <div class="copy" data-peak="0.17">Brand, copy, and the build.</div>
+    <div class="copy" data-peak="0.46">One studio. One pair of hands.</div>
+    <div class="copy" data-peak="0.74">Made to be felt, not just seen.</div>
+    <div class="copy" data-peak="0.96">Step inside &rarr;</div>
+  </div>
+
+  <div id="hud">loading...</div>
+  <div id="hint">scroll to walk &middot; move pointer to look (&plusmn;10&deg;)</div>
+  <div id="scroll"></div>
+
+  <div id="fallback">HIERO</div>
+
+  <!-- Scroll stack as classic globals (load before the deferred module). -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.23/dist/lenis.min.js"></script>
+
+  <script type="importmap">
+  { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.module.js" } }
+  </script>
+  <script type="module" src="./spike.js"></script>
+</body>
+</html>
