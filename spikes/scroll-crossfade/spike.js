@@ -21,9 +21,10 @@ const CONFIG = {
   tubeFarR: 2.3,      // narrow end radius - less extreme taper so the destination GROWS on approach
   tubeLen: 60,        // total tube length down -Z
   camStartZ: 6.0,     // camera just inside the wide end
-  dolly: 42.0,        // forward travel. Long, so wall ribs stream past and the doorway visibly grows.
-                      // U2 finding: a short 12u dolly felt "stuck" - strong forced perspective fights
-                      // the sense of motion (a tiny far end stays looking far). Push ?dolly=NN to retune.
+  dolly: 54.0,        // forward travel - long enough that the camera ARRIVES at the doorway (it fills
+                      // most of the frame at the end), not just inches forward. U2 finding: short dollies
+                      // felt "stuck" because strong forced perspective fights motion (a tiny far end stays
+                      // looking far); the fix is to travel most of the corridor + arrive. Push ?dolly=NN to retune.
   maxLook: 0,         // pointer-look OFF by default - read as unintentional wobble. ?look=4 tries a tuned version.
   lookEase: 0.12,     // tighter smoothing if re-enabled (less float)
   progEase: 0.10,     // scroll-progress smoothing (on top of GSAP scrub)
