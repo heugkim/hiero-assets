@@ -17,15 +17,15 @@ const Lenis = window.Lenis?.default || window.Lenis;   // UMD builds vary on .de
 
 // ---- Tunables (the "walk length / camera motion" open question is resolved here) ----
 const CONFIG = {
-  tubeNearR: 7.0,     // wide end radius (where the camera lives)
-  tubeFarR: 1.4,      // narrow end radius (forced-perspective vanishing)
-  tubeLen: 64,        // total tube length down -Z
-  camStartZ: 4.0,     // camera just inside the wide end
-  dolly: 12.0,        // SAFE forward travel. Tube is 64 long; 12 keeps the camera
-                      // in the wide half so the taper always reads as "more tunnel".
-                      // Push this in the URL (?dolly=30) to find where the trick breaks.
-  maxLook: 10 * Math.PI / 180,  // +/-10deg pointer-look
-  lookEase: 0.06,     // pointer-look smoothing
+  tubeNearR: 6.5,     // wide end radius (where the camera lives)
+  tubeFarR: 2.3,      // narrow end radius - less extreme taper so the destination GROWS on approach
+  tubeLen: 60,        // total tube length down -Z
+  camStartZ: 6.0,     // camera just inside the wide end
+  dolly: 42.0,        // forward travel. Long, so wall ribs stream past and the doorway visibly grows.
+                      // U2 finding: a short 12u dolly felt "stuck" - strong forced perspective fights
+                      // the sense of motion (a tiny far end stays looking far). Push ?dolly=NN to retune.
+  maxLook: 0,         // pointer-look OFF by default - read as unintentional wobble. ?look=4 tries a tuned version.
+  lookEase: 0.12,     // tighter smoothing if re-enabled (less float)
   progEase: 0.10,     // scroll-progress smoothing (on top of GSAP scrub)
   fogDensity: 0.018,
 };
@@ -181,7 +181,7 @@ function buildWorld() {
 
   // Ribs: short ring bands hugging the wall at intervals - depth cue + parallax for the look.
   const ribMat = makeBlendMaterial(0x3a3a44);
-  const ribCount = 7;
+  const ribCount = 12;   // more bands so they stream past during the longer dolly = stronger motion cue
   for (let i = 1; i <= ribCount; i++) {
     const t = i / (ribCount + 1);                  // 0..1 along the tube
     const r = THREE.MathUtils.lerp(CONFIG.tubeNearR, CONFIG.tubeFarR, t) * 1.005;

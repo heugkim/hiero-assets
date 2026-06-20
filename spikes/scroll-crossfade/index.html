@@ -16,7 +16,7 @@
     display: block; z-index: 0; }
 
   /* The scroll container only exists to create scroll distance. 700vh = ~7 screens. */
-  #scroll { position: relative; z-index: 1; height: 700vh; pointer-events: none; }
+  #scroll { position: relative; z-index: 1; height: 500vh; pointer-events: none; }
 
   /* Copy overlays - faked "pins" (opacity windows), not real scroll-pinning (U5's job). */
   #overlay { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
@@ -55,7 +55,7 @@
   </div>
 
   <div id="hud">loading...</div>
-  <div id="hint">scroll to walk &middot; move pointer to look (&plusmn;10&deg;)</div>
+  <div id="hint">scroll to walk</div>
   <div id="scroll"></div>
 
   <div id="fallback">HIERO</div>
