@@ -180,14 +180,16 @@ function buildWorld() {
   tube.position.z = CONFIG.camStartZ - CONFIG.tubeLen / 2;
   scene.add(tube);
 
-  // Ribs: short ring bands hugging the wall at intervals - depth cue + parallax for the look.
-  const ribMat = makeBlendMaterial(0x3a3a44);
-  const ribCount = 12;   // more bands so they stream past during the longer dolly = stronger motion cue
+  // Ribs: THIN seam bands on the wall at intervals - a subtle streaming motion cue.
+  // (Earlier these were thick + dark and read as big black rectangular frames when you
+  // passed through one. Now thin + wall-toned so they track the light and just whisper past.)
+  const ribMat = makeBlendMaterial(0x848088);   // ~wall tone, so ribs track the light, never go black
+  const ribCount = 10;
   for (let i = 1; i <= ribCount; i++) {
     const t = i / (ribCount + 1);                  // 0..1 along the tube
-    const r = THREE.MathUtils.lerp(CONFIG.tubeNearR, CONFIG.tubeFarR, t) * 1.005;
+    const r = THREE.MathUtils.lerp(CONFIG.tubeNearR, CONFIG.tubeFarR, t) * 0.99;  // slight inset = visible, no z-fight
     const ring = new THREE.Mesh(
-      new THREE.CylinderGeometry(r, r, 0.5, 4, 1, true), ribMat
+      new THREE.CylinderGeometry(r, r, 0.12, 4, 1, true), ribMat   // thin band, not a deep frame
     );
     ring.rotation.x = Math.PI / 2;
     ring.rotation.y = Math.PI / 4;
