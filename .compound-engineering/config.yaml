@@ -5,8 +5,15 @@
 # Claude plans and reviews; Codex writes the code.
 # `prefer` = try Codex first, fall back to Claude natively (with a disclosure
 # line) if Codex is unreachable. Set to `off` to build with Claude again.
-# No `model:` key on purpose — Codex uses whatever ~/.codex/config.toml says
-# (currently gpt-5.6-terra at xhigh reasoning), so this tracks that file.
+#
+# The delegated run ignores ~/.codex/config.toml completely — CE invokes
+# `codex exec --ignore-user-config`. Your model, xhigh reasoning, fast mode and
+# Codex hooks do NOT apply to it. CE pins reasoning to `high`; that is not
+# configurable without patching the plugin, which auto-updates.
+# Verified 2026-08-17 against compound-engineering 3.22.1,
+# skills/ce-work/scripts/cross-model-work.sh:97-104.
+#
+# Adding `model: gpt-5.6` under the harness below does work — it passes `-m`.
 
 work_engine_mode: prefer
 work_engine_preferences:
