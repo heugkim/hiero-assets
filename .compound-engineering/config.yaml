@@ -1,0 +1,13 @@
+# Compound Engineering — project config
+# Docs: https://github.com/EveryInc/compound-engineering-plugin
+
+# --- ce-work implementation engine ---
+# Claude plans and reviews; Codex writes the code.
+# `prefer` = try Codex first, fall back to Claude natively (with a disclosure
+# line) if Codex is unreachable. Set to `off` to build with Claude again.
+# No `model:` key on purpose — Codex uses whatever ~/.codex/config.toml says
+# (currently gpt-5.6-terra at xhigh reasoning), so this tracks that file.
+
+work_engine_mode: prefer
+work_engine_preferences:
+  - harness: codex
